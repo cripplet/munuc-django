@@ -1,2 +1,4 @@
 django==1.10.1
 djangorestframework==3.4.6
+coverage==4.2
+drfdocs==0.0.11

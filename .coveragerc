@@ -1,0 +1,6 @@
+[run]
+branch = True
+
+omit = manage.py
+       venv/*
+       munuc_api/migrations/*

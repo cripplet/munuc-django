@@ -1,27 +1,61 @@
 from rest_framework import serializers
 
 from munuc_api.models import Committee
-from munuc_api.models import Country
+from munuc_api.models import CommitteeStaffer
+from munuc_api.models import Delegation
+from munuc_api.models import InternalUser
+from munuc_api.models import BaseUser
 from munuc_api.models import USGGroup
 
 
-class CountrySerializer(serializers.HyperlinkedModelSerializer):
-  committees = serializers.HyperlinkedRelatedField(many=True, view_name='committee-detail', read_only=True)
+class InternalUserSerializer(serializers.HyperlinkedModelSerializer):
+  url = serializers.HyperlinkedIdentityField(view_name='public:internaluser-detail', read_only=True)
+  first_name = serializers.CharField(source='user.first_name', read_only=True)
+  last_name = serializers.CharField(source='user.last_name', read_only=True)
+  usg_group = serializers.HyperlinkedRelatedField(view_name='public:usggroup-detail', read_only=True)
+
   class Meta:
-    model = Country
-    read_only_fields = ('name',)
+    model = InternalUser
+    read_only = True
+    exclude = ('user',)
+
+
+class CommitteeStafferSerializer(serializers.HyperlinkedModelSerializer):
+  url = serializers.HyperlinkedIdentityField(view_name='public:committeestaffer-detail', read_only=True)
+  first_name = serializers.CharField(source='user.first_name', read_only=True)
+  last_name = serializers.CharField(source='user.last_name', read_only=True)
+  committee = serializers.HyperlinkedRelatedField(view_name='public:committee-detail', read_only=True)
+
+  class Meta:
+    model = CommitteeStaffer
+    read_only = True
+    exclude = ('user', 'email',)
+
+
+class DelegationSerializer(serializers.HyperlinkedModelSerializer):
+  url = serializers.HyperlinkedIdentityField(view_name='public:delegation-detail', read_only=True)
+  committees = serializers.HyperlinkedRelatedField(many=True, view_name='public:committee-detail', read_only=True)
+  class Meta:
+    model = Delegation
+    read_only = True
 
 
 class CommitteeSerializer(serializers.HyperlinkedModelSerializer):
-  countries = serializers.HyperlinkedRelatedField(many=True, view_name='country-detail', read_only=True)
+  url = serializers.HyperlinkedIdentityField(view_name='public:committee-detail', read_only=True)
+  delegations = serializers.HyperlinkedRelatedField(many=True, view_name='public:delegation-detail', read_only=True)
+  staffers = serializers.HyperlinkedRelatedField(many=True, view_name='public:committeestaffer-detail', read_only=True)
+  usg_group = serializers.HyperlinkedRelatedField(view_name='public:usggroup-detail', read_only=True)
+
   class Meta:
     model = Committee
-    read_only_fields = ('name', 'abbreviation', 'blurb', 'usg_group', 'countries')
+    read_only = True
 
 
 class USGGroupSerializer(serializers.HyperlinkedModelSerializer):
-  committees = serializers.HyperlinkedRelatedField(many=True, view_name='committee-detail', read_only=True)
-  # committees = CommitteeSerializer(many=True)
+  url = serializers.HyperlinkedIdentityField(view_name='public:usggroup-detail', read_only=True)
+  committees = serializers.HyperlinkedRelatedField(many=True, view_name='public:committee-detail', read_only=True)
+  usg = serializers.HyperlinkedRelatedField(view_name='public:internaluser-detail', read_only=True)
+
   class Meta:
     model = USGGroup
-    read_only_fields = ('name', 'abbreviation', 'blurb', 'committees')
+    read_only = True

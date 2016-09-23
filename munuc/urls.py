@@ -17,18 +17,13 @@ from django.conf.urls import url
 from django.conf.urls import include
 
 from rest_framework import routers
-from munuc_api.public import views
+from munuc_api import urls
 
 from django.contrib import admin
 
 
-api_public_router = routers.DefaultRouter()
-api_public_router.register(r'committees', views.CommitteeViewSet)
-api_public_router.register(r'countries', views.CountryViewSet)
-api_public_router.register(r'usg_groups', views.USGGroupViewSet)
-
 urlpatterns = [
-    url(r'^api/public/', include(api_public_router.urls)),
+    url(r'^api/', include('munuc_api.urls')),
     url(r'^api-auth/', include('rest_framework.urls', namespace='rest_framework')),
     url(r'^admin/', admin.site.urls),
 ]
