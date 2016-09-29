@@ -5,14 +5,14 @@ from rest_framework.test import APIRequestFactory
 from rest_framework.test import APITestCase
 from rest_framework.test import APIClient
 
-from munuc_api.models import InternalUser
-from munuc_api.models import USGGroup
-from munuc_api.models import Delegation
-from munuc_api.models import Committee
-from munuc_api.models import CommitteeStaffer
+from atlas.models import InternalUser
+from atlas.models import USGGroup
+from atlas.models import Delegation
+from atlas.models import Committee
+from atlas.models import CommitteeStaffer
 
 
-@override_settings(ROOT_URLCONF='munuc_api.urls')
+@override_settings(ROOT_URLCONF='atlas.urls')
 class BaseTestCase(APITestCase):
   def setUp(self):
     super(BaseTestCase, self).setUp()

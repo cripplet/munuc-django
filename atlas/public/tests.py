@@ -1,11 +1,11 @@
 import json
 
-from munuc_api.tests import BaseTestCase
-from munuc_api.public import serializers
+from atlas.tests import BaseTestCase
+from atlas.public import serializers
 
-from munuc_api.models import Committee
-from munuc_api.models import Delegation
-from munuc_api.models import USGGroup
+from atlas.models import Committee
+from atlas.models import Delegation
+from atlas.models import USGGroup
 
 
 class TestPublicApi(BaseTestCase):

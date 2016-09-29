@@ -2,17 +2,17 @@ from django.shortcuts import render
 
 from rest_framework import viewsets
 
-from munuc_api.models import Committee
-from munuc_api.models import CommitteeStaffer
-from munuc_api.models import Delegation
-from munuc_api.models import InternalUser
-from munuc_api.models import USGGroup
+from atlas.models import Committee
+from atlas.models import CommitteeStaffer
+from atlas.models import Delegation
+from atlas.models import InternalUser
+from atlas.models import USGGroup
 
-from munuc_api.public.serializers import CommitteeSerializer
-from munuc_api.public.serializers import CommitteeStafferSerializer
-from munuc_api.public.serializers import DelegationSerializer
-from munuc_api.public.serializers import InternalUserSerializer
-from munuc_api.public.serializers import USGGroupSerializer
+from atlas.public.serializers import CommitteeSerializer
+from atlas.public.serializers import CommitteeStafferSerializer
+from atlas.public.serializers import DelegationSerializer
+from atlas.public.serializers import InternalUserSerializer
+from atlas.public.serializers import USGGroupSerializer
 
 
 class CommitteeViewSet(viewsets.ReadOnlyModelViewSet):

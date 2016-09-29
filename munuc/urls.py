@@ -17,13 +17,13 @@ from django.conf.urls import url
 from django.conf.urls import include
 
 from rest_framework import routers
-from munuc_api import urls
+from atlas import urls
 
 from django.contrib import admin
 
 
 urlpatterns = [
-    url(r'^api/', include('munuc_api.urls')),
+    url(r'^api/', include('atlas.urls')),
     url(r'^api-auth/', include('rest_framework.urls', namespace='rest_framework')),
     url(r'^admin/', admin.site.urls),
 ]

@@ -1,11 +1,11 @@
 from rest_framework import serializers
 
-from munuc_api.models import Committee
-from munuc_api.models import CommitteeStaffer
-from munuc_api.models import Delegation
-from munuc_api.models import InternalUser
-from munuc_api.models import BaseUser
-from munuc_api.models import USGGroup
+from atlas.models import Committee
+from atlas.models import CommitteeStaffer
+from atlas.models import Delegation
+from atlas.models import InternalUser
+from atlas.models import BaseUser
+from atlas.models import USGGroup
 
 
 class InternalUserSerializer(serializers.HyperlinkedModelSerializer):

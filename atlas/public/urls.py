@@ -1,5 +1,5 @@
 from rest_framework import routers
-from munuc_api.public import views
+from atlas.public import views
 
 
 router = routers.DefaultRouter()
