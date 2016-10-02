@@ -13,6 +13,7 @@ virtualenv venv
 pip install -r requirements.txt
 
 python manage.py migrate
+python manage.py migrate atlas
 
 python manage.py runserver
 ```
