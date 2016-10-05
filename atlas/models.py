@@ -1,8 +1,10 @@
 from __future__ import unicode_literals
 
 from django.db import models
+from django.core import exceptions
 
 from django.contrib.auth.models import User
+from django.contrib.auth.models import Group
 
 from django.dispatch import receiver
 from django.db.models.signals import pre_save, post_save
@@ -51,6 +53,16 @@ class InternalUser(Accountant):
   role = models.CharField(max_length=8, choices=ROLE_CHOICES)
   blurb = models.TextField(blank=True)
   email = models.EmailField(unique=True)
+
+  def save(self, **kwargs):
+    try:
+      group = Group.objects.get(name='internal_user')
+    except exceptions.ObjectDoesNotExist:
+      group = Group.objects.create(name='internal_user')
+      group.save()
+    if group not in self.user.groups.all():
+      self.user.groups.add(group)
+    super(InternalUser, self).save(**kwargs)
 
 
 # class Minion(Accountant):
@@ -106,6 +118,15 @@ class CommitteeStaffer(BaseUser):
   committee = models.ForeignKey(Committee, related_name='staffers')
   email = models.EmailField(unique=True)
 
+  def save(self, **kwargs):
+    try:
+      group = Group.objects.get(name='committee_staffer')
+    except exceptions.ObjectDoesNotExist:
+      group = Group.objects.create(name='committee_staffer')
+      group.save()
+    if group not in self.user.groups.all():
+      self.user.groups.add(group)
+    super(CommitteeStaffer, self).save(**kwargs)
 
 # class Delegate(BaseUser):
 #   committee = models.ForeignKey(Committee, related_name='delegates')

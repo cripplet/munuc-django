@@ -1,5 +1,6 @@
 from django.test import override_settings
 from django.contrib.auth.models import User
+from django.contrib.auth.models import Group
 
 from rest_framework.test import APIRequestFactory
 from rest_framework.test import APITestCase
@@ -32,9 +33,11 @@ class BaseTestCase(APITestCase):
   def create_staffer(self, role, username, committee, first_name='', last_name=''):
     prefix = 'Mr.'
     email = '%s@munuc.org' % username
+    password = 'password'
     staffer = CommitteeStaffer.objects.create(
         user=self._create_user(
             username=username,
+            password=password,
             first_name=first_name,
             last_name=last_name,
         ),
@@ -72,3 +75,23 @@ class BaseTestCase(APITestCase):
     Committee.objects.all().delete()
     CommitteeStaffer.objects.all().delete()
     super(BaseTestCase, self).tearDown()
+
+
+class GroupTest(BaseTestCase):
+  def test_internal_user(self):
+    user = self.create_internal_user('USG', 'mzhang')
+    self.assertIn(Group.objects.get(name='internal_user'), user.user.groups.all())
+
+  def test_staffer(self):
+    usg = self.create_internal_user('USG', 'bsmithgall')
+    usg_group = USGGroup.objects.create(usg=usg, name='General Assembly', abbreviation='GA')
+    usg_group.save()
+    committee = Committee.objects.create(
+        name='Legal Committee',
+        abbreviation='legal',
+        usg_group=usg_group,
+        email='legal@munuc.org',
+    )
+    committee.save()
+    user = self.create_staffer('Chair', 'mzhang', committee)
+    self.assertIn(Group.objects.get(name='committee_staffer'), user.user.groups.all())

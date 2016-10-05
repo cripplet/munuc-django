@@ -1,4 +1,4 @@
-rom rest_framework import routers
+from rest_framework import routers
 from atlas.staffers import views
 
 

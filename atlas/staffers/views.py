@@ -1,6 +1,7 @@
 from django.shortcuts import render
 
 from rest_framework import viewsets
+from rest_framework import mixins
 
 from atlas.models import Committee
 from atlas.models import CommitteeStaffer
@@ -8,14 +9,22 @@ from atlas.models import Delegation
 from atlas.models import InternalUser
 from atlas.models import USGGroup
 
-from atlas.public.serializers import CommitteeSerializer
-from atlas.public.serializers import CommitteeStafferSerializer
-from atlas.public.serializers import DelegationSerializer
-from atlas.public.serializers import InternalUserSerializer
-from atlas.public.serializers import USGGroupSerializer
+from atlas.staffers.serializers import CommitteeSerializer
+
+from atlas.staffers.permissions import CommitteeStafferPermission
 
 
-class CommitteeViewSet(viewsets.ReadOnlyModelViewSet):
-    queryset = Committee.objects.all()
+class EditModelViewSet(mixins.RetrieveModelMixin, 
+                       mixins.UpdateModelMixin,
+                       mixins.ListModelMixin,
+                       viewsets.GenericViewSet):
+    pass
+
+class CommitteeViewSet(EditModelViewSet):
+    permission_classes = (CommitteeStafferPermission, )
     serializer_class = CommitteeSerializer
 
+    def get_queryset(self):
+      user = self.request.user
+      committee_staffer = CommitteeStaffer.objects.get(user=user)
+      return Committee.objects.filter(staffers=committee_staffer)
