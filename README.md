@@ -1,6 +1,6 @@
-# munuc-django
-Toy MUNUCv3 webapp using the Flask framework
+# zuruk
 
+See https://firebase.google.com/docs/functions/get-started.
 
 ## Installation
 
@@ -8,7 +8,6 @@ Toy MUNUCv3 webapp using the Flask framework
 git clone https://github.com/cripplet/zuruk
 cd zuruk
 
-virtualenv venv
-. venv/bin/activate
-pip install -r requirements.txt
+sudo apt-get install nodejs build-essential
+sudo npm install -g firebase-tools
 ```
